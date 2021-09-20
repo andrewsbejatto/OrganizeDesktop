@@ -7,7 +7,8 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts, FMX.ListBox,
   FMX.Controls.Presentation, FMX.StdCtrls, FMX.Objects, System.ImageList, FMX.ImgList, FMX.Effects, FMX.Memo.Types,
   FMX.ScrollBox, FMX.Memo,
-  FMX.Platform.Win;
+  FMX.Platform.Win, FMX.ListView.Types, FMX.ListView.Appearances, FMX.ListView.Adapters.Base, FMX.ListView, FMX.MultiView,
+  FMX.MultiView.Types;
 
 type
   TFrmHome = class(TForm)
@@ -17,8 +18,12 @@ type
     imgModel: TImage;
     ImageList1: TImageList;
     ShadowEffect1: TShadowEffect;
-    Button1: TButton;
     PanelOpacity: TPanel;
+    ListView1: TListView;
+    Button2: TButton;
+    Button1: TButton;
+    MultiView: TMultiView;
+    btnClose: TButton;
     procedure ListBoxDragOver(Sender: TObject; const Data: TDragObject; const Point: TPointF; var Operation: TDragOperation);
     procedure ListBoxDragDrop(Sender: TObject; const Data: TDragObject; const Point: TPointF);
     procedure MetropolisUIListBoxItem1Click(Sender: TObject);
@@ -27,6 +32,9 @@ type
     procedure ListBoxDblClick(Sender: TObject);
     procedure ListBoxMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
     procedure FormCreate(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure MultiViewClick(Sender: TObject);
+    procedure btnCloseClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -35,6 +43,9 @@ type
     { Public declarations }
   end;
 
+Const
+  DirImg = 'C:\Delphi\Andrews\AppDesktop\img\';
+
 var
   FrmHome: TFrmHome;
 
@@ -42,28 +53,52 @@ implementation
 
 uses Winapi.ShellAPI, WinApi.Windows, Vcl.Graphics, System.IOUtils,
   ActiveX, ComObj, Winapi.ShlObj, System.Generics.Collections,
-  WinShell, ClassHelper;
+  WinShell, ClassHelper, FMX.MultiView.CustomPresentation;
 
 {$R *.fmx}
 
+procedure TFrmHome.btnCloseClick(Sender: TObject);
+begin
+  Close;
+end;
+
 procedure TFrmHome.Button1Click(Sender: TObject);
+var
+  icon: TMemoryStream;
 begin
 //  Image1.Bitmap.LoadFromStream(GetIcon('c:\saac\saac.exe'));
+  MultiView.HideMaster;
   LoadShortcut;
 //    CreateListBoxShortcut('C:\Users\music\Desktop\Genshin Impact.lnk');
 end;
 
-procedure TFrmHome.FormCreate(Sender: TObject);
-var h : HWND;
-    aStyle : integer;
-    alphaValue : byte;
+procedure TFrmHome.Button2Click(Sender: TObject);
+var
+  list: TObjectList<TClassFile>;
+  f   : TClassFile;
+  I   : Integer;
 begin
-    h := WindowHandleToPlatform(self.Handle).Wnd;
-    AStyle := GetWindowLong(h, GWL_EXSTYLE);
-    SetWindowLong(h, GWL_EXSTYLE, AStyle or WS_EX_LAYERED);
+  list := TClassFiles.ListDesktopFiles;
 
-    AlphaValue := 125;
-    SetLayeredWindowAttributes(h, 0, alphaValue, LWA_ALPHA);
+  for f in list do
+    TClassShortcut.CreateShortcutItem(f, ListView1.Items.Add);
+end;
+
+procedure TFrmHome.FormCreate(Sender: TObject);
+var
+  h : HWND;
+  aStyle : integer;
+  alphaValue : byte;
+begin
+  h := WindowHandleToPlatform(self.Handle).Wnd;
+  AStyle := GetWindowLong(h, GWL_EXSTYLE);
+  SetWindowLong(h, GWL_EXSTYLE, AStyle or WS_EX_LAYERED);
+
+  AlphaValue := 125;
+  SetLayeredWindowAttributes(h, 0, alphaValue, LWA_ALPHA);
+
+  MultiView.Mode := TMultiViewMode.Drawer;
+  MultiView.DrawerOptions.Placement := TPanelPlacement.Top;
 end;
 
 procedure TFrmHome.ListBoxDblClick(Sender: TObject);
@@ -114,6 +149,11 @@ end;
 procedure TFrmHome.MetropolisUIListBoxItem1Click(Sender: TObject);
 begin
 //  ShowMessage(TMetropolisUIListBoxItem(Sender).Title);
+end;
+
+procedure TFrmHome.MultiViewClick(Sender: TObject);
+begin
+  MultiView.HideMaster;
 end;
 
 end.
