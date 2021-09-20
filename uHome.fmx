@@ -181,7 +181,7 @@ object FrmHome: TFrmHome
     OnClick = MultiViewClick
     object Button1: TButton
       Align = Right
-      Position.X = -22.000000000000000000
+      Position.X = -102.000000000000000000
       Size.Width = 103.000000000000000000
       Size.Height = 630.000000000000000000
       Size.PlatformDefault = False
@@ -190,8 +190,8 @@ object FrmHome: TFrmHome
       OnClick = Button1Click
     end
     object btnClose: TButton
-      Align = Right
-      Position.X = -102.000000000000000000
+      Align = MostRight
+      Position.X = 1.000000000000000000
       Size.Width = 80.000000000000000000
       Size.Height = 630.000000000000000000
       Size.PlatformDefault = False

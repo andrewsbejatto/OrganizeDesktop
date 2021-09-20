@@ -53,7 +53,7 @@ implementation
 
 uses Winapi.ShellAPI, WinApi.Windows, Vcl.Graphics, System.IOUtils,
   ActiveX, ComObj, Winapi.ShlObj, System.Generics.Collections,
-  WinShell, ClassHelper, FMX.MultiView.CustomPresentation;
+  WinShell, ClassHelper;
 
 {$R *.fmx}
 
