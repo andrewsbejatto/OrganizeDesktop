@@ -24,6 +24,7 @@ type
     Button1: TButton;
     MultiView: TMultiView;
     btnClose: TButton;
+    FlowLayout1: TFlowLayout;
     procedure ListBoxDragOver(Sender: TObject; const Data: TDragObject; const Point: TPointF; var Operation: TDragOperation);
     procedure ListBoxDragDrop(Sender: TObject; const Data: TDragObject; const Point: TPointF);
     procedure MetropolisUIListBoxItem1Click(Sender: TObject);
@@ -99,6 +100,8 @@ begin
 
   MultiView.Mode := TMultiViewMode.Drawer;
   MultiView.DrawerOptions.Placement := TPanelPlacement.Top;
+  MultiView.Width := 30;
+  MultiView.NavigationPaneOptions.CollapsedWidth := 30;
 end;
 
 procedure TFrmHome.ListBoxDblClick(Sender: TObject);
